@@ -1,0 +1,67 @@
+# Getting Started
+
+This guide will walk you through setting up MiniVault for your project.
+
+## Prerequisites
+
+- Node.js 18.17 or later
+- A Notion account with API access
+- Google Cloud project (optional, for Drive/Gmail integration)
+- GitHub account (optional, for repo tracking)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/minivault.git
+cd minivault
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Copy the environment template:
+
+```bash
+cp .env.example .env.local
+```
+
+4. Configure your environment variables (see [Configuration](/docs/configuration))
+
+5. Start the development server:
+
+```bash
+npm run dev
+```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Setting Up Notion
+
+### Create a Notion Integration
+
+1. Go to [Notion Integrations](https://www.notion.so/my-integrations)
+2. Click "New integration"
+3. Name it "MiniVault" and select your workspace
+4. Copy the "Internal Integration Token"
+5. Add it to your `.env.local` as `NOTION_TOKEN`
+
+### Share Databases with Integration
+
+For each Notion database you want to use:
+
+1. Open the database in Notion
+2. Click the "..." menu in the top right
+3. Select "Add connections" and choose your MiniVault integration
+4. Copy the database ID from the URL
+5. Add it to your `.env.local` with the appropriate variable name
+
+## Next Steps
+
+- [Configure environment variables](/docs/configuration)
+- [Set up authentication](/docs/configuration#authentication)
+- [Connect your Notion databases](/docs/configuration#notion-databases)

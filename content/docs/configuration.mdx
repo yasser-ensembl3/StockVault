@@ -1,0 +1,109 @@
+# Configuration
+
+MiniVault is configured entirely through environment variables. All settings are stored in `.env.local`.
+
+## Required Variables
+
+### Authentication
+
+```bash
+# NextAuth configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key-here  # Generate with: openssl rand -base64 32
+```
+
+### Notion
+
+```bash
+# Notion API token
+NOTION_TOKEN=secret_xxxxxxxxxxxxx
+```
+
+## OAuth Providers
+
+### Google OAuth
+
+```bash
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+```
+
+To set up Google OAuth:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API, Gmail API, and Google Drive API
+4. Configure OAuth consent screen
+5. Create OAuth 2.0 credentials
+6. Add callback URL: `http://localhost:3000/api/auth/callback/google`
+
+### GitHub OAuth
+
+```bash
+GITHUB_ID=your-github-client-id
+GITHUB_SECRET=your-github-client-secret
+```
+
+To set up GitHub OAuth:
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Create a new OAuth App
+3. Add callback URL: `http://localhost:3000/api/auth/callback/github`
+
+## Project Configuration
+
+All project-specific settings use the `NEXT_PUBLIC_` prefix:
+
+```bash
+# Project name and description
+NEXT_PUBLIC_PROJECT_NAME=My Project
+NEXT_PUBLIC_PROJECT_DESCRIPTION=A brief description
+
+# GitHub repository
+NEXT_PUBLIC_GITHUB_OWNER=username
+NEXT_PUBLIC_GITHUB_REPO=repository-name
+
+# Google Drive folder ID
+NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID=folder-id-here
+```
+
+## Notion Databases
+
+Each dashboard section can connect to a Notion database:
+
+```bash
+# Core databases
+NEXT_PUBLIC_NOTION_DB_TASKS=database-id
+NEXT_PUBLIC_NOTION_DB_GOALS=database-id
+NEXT_PUBLIC_NOTION_DB_METRICS=database-id
+NEXT_PUBLIC_NOTION_DB_DOCUMENTS=database-id
+NEXT_PUBLIC_NOTION_DB_FEEDBACK=database-id
+
+# Optional databases
+NEXT_PUBLIC_NOTION_DB_ORDERS=database-id
+NEXT_PUBLIC_NOTION_DB_RECURRING_TASKS=database-id
+NEXT_PUBLIC_NOTION_DB_MILESTONES=database-id
+NEXT_PUBLIC_NOTION_DB_ESSENTIALS=database-id
+NEXT_PUBLIC_NOTION_DB_SALES_TRACKING=database-id
+NEXT_PUBLIC_NOTION_DB_WEB_ANALYTICS=database-id
+```
+
+## Example .env.local
+
+```bash
+# Authentication
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-generated-secret
+
+# OAuth
+GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=xxx
+GITHUB_ID=xxx
+GITHUB_SECRET=xxx
+
+# Notion
+NOTION_TOKEN=secret_xxx
+
+# Project
+NEXT_PUBLIC_PROJECT_NAME=MiniVault Demo
+NEXT_PUBLIC_NOTION_DB_TASKS=xxx
+NEXT_PUBLIC_NOTION_DB_GOALS=xxx
+```

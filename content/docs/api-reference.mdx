@@ -1,0 +1,105 @@
+# API Reference
+
+MiniVault provides several API endpoints for interacting with external services.
+
+## Notion API Routes
+
+### GET /api/notion/tasks
+
+Fetch tasks from the configured Notion database.
+
+**Query Parameters:**
+- `databaseId` - Notion database ID (optional, uses config if not provided)
+
+**Response:**
+```json
+{
+  "tasks": [
+    {
+      "id": "page-id",
+      "title": "Task title",
+      "status": "In Progress",
+      "priority": "High",
+      "dueDate": "2024-01-15",
+      "assignee": "John",
+      "tags": ["feature"],
+      "url": "https://notion.so/..."
+    }
+  ]
+}
+```
+
+### GET /api/notion/goals
+
+Fetch goals/output metrics.
+
+**Query Parameters:**
+- `databaseId` - Notion database ID
+
+### GET /api/notion/metrics
+
+Fetch input metrics.
+
+**Query Parameters:**
+- `databaseId` - Notion database ID
+
+### GET /api/notion/documents
+
+Fetch documentation links.
+
+**Methods:** GET, POST, PATCH, DELETE
+
+### GET /api/notion/feedback
+
+Manage user feedback.
+
+**Methods:** GET, POST, PATCH, DELETE
+
+### GET /api/notion/sales
+
+Fetch order/sales data.
+
+**Query Parameters:**
+- `databaseId` - Notion database ID
+
+## Google API Routes
+
+### GET /api/google/drive
+
+Fetch files from Google Drive.
+
+**Query Parameters:**
+- `maxResults` - Number of files to return (default: 10)
+- `query` - Search query
+
+### GET /api/google/gmail
+
+Fetch emails from Gmail.
+
+**Query Parameters:**
+- `maxResults` - Number of emails to return (default: 10)
+- `query` - Search query
+
+## GitHub API Routes
+
+### GET /api/github/repo
+
+Fetch repository information.
+
+**Query Parameters:**
+- `owner` - Repository owner
+- `repo` - Repository name
+
+**Response:**
+```json
+{
+  "repository": { ... },
+  "commits": [ ... ],
+  "issues": [ ... ],
+  "pullRequests": [ ... ]
+}
+```
+
+## Authentication
+
+All API routes require authentication. Include the session cookie or use `getServerSession(authOptions)` for server-side requests.
