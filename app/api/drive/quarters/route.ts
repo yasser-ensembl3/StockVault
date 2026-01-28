@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { listQuarters, isGoogleDriveConfigured } from '@/lib/google-drive'
+import { withCache } from '@/lib/cache'
 
 // Mock data as fallback when Google Drive credentials are invalid/expired
 const MOCK_QUARTERS = [
@@ -19,7 +20,7 @@ export async function GET() {
       })
     }
 
-    const quarters = await listQuarters()
+    const quarters = await withCache('quarters', listQuarters)
 
     return NextResponse.json({
       quarters,

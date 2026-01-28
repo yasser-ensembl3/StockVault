@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { listQuarters, getInsights, isGoogleDriveConfigured } from '@/lib/google-drive'
+import { withCache } from '@/lib/cache'
 
 // Mock insights data as fallback
 function getMockFinancialData(company: string, quarter: string) {
@@ -88,8 +89,8 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // Get all quarters
-    const quarters = await listQuarters()
+    // Get all quarters (cached)
+    const quarters = await withCache('quarters', listQuarters)
 
     if (quarters.length === 0) {
       const mockData = type === 'financial'
@@ -112,7 +113,11 @@ export async function GET(request: NextRequest) {
       if (found) quarter = found
     }
 
-    const data = await getInsights(quarter.id, company, type)
+    // Get insights (cached by quarter, company, and type)
+    const data = await withCache(
+      `insights:${quarter.id}:${company}:${type}`,
+      () => getInsights(quarter.id, company, type)
+    )
 
     if (!data) {
       // Return mock data if no real data found
