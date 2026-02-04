@@ -42,24 +42,24 @@ interface AnalyticsRecord {
 type MetricKey = "Sessions" | "Conversion Rate" | "Add to Cart Rate" | "Checkout Rate"
 
 const METRIC_CONFIGS: Record<MetricKey, { label: string; format: (v: number) => string; color: string }> = {
-  Sessions: { label: "Sessions", format: (v) => v.toLocaleString(), color: "#3b82f6" },
-  "Conversion Rate": { label: "Conv. Rate", format: (v) => `${v.toFixed(2)}%`, color: "#10b981" },
-  "Add to Cart Rate": { label: "Add to Cart", format: (v) => `${v.toFixed(2)}%`, color: "#f59e0b" },
-  "Checkout Rate": { label: "Checkout", format: (v) => `${v.toFixed(2)}%`, color: "#8b5cf6" },
+  Sessions: { label: "Sessions", format: (v) => v.toLocaleString(), color: "#d1d5db" },
+  "Conversion Rate": { label: "Conv. Rate", format: (v) => `${v.toFixed(2)}%`, color: "#9ca3af" },
+  "Add to Cart Rate": { label: "Add to Cart", format: (v) => `${v.toFixed(2)}%`, color: "#4b5563" },
+  "Checkout Rate": { label: "Checkout", format: (v) => `${v.toFixed(2)}%`, color: "#6b7280" },
 }
 
 const TRAFFIC_COLORS: Record<string, string> = {
-  Direct: "#3b82f6",
-  Google: "#ea4335",
-  Facebook: "#1877f2",
-  Twitter: "#1da1f2",
-  LinkedIn: "#0077b5",
+  Direct: "#d1d5db",
+  Google: "#6b7280",
+  Facebook: "#9ca3af",
+  Twitter: "#9ca3af",
+  LinkedIn: "#6b7280",
   Other: "#6b7280",
 }
 
 const DEVICE_COLORS: Record<string, string> = {
-  Desktop: "#8b5cf6",
-  Mobile: "#f59e0b",
+  Desktop: "#6b7280",
+  Mobile: "#4b5563",
 }
 
 export function WebAnalyticsSection() {
@@ -142,17 +142,17 @@ export function WebAnalyticsSection() {
             onClick={() => setSelectedMetric(metric)}
             className={`text-center p-3 rounded-lg transition-all cursor-pointer hover:shadow-md ${
               isSelected
-                ? "bg-blue-600 border-blue-700 ring-2 ring-blue-400"
-                : "bg-blue-50 border-blue-200 hover:bg-blue-100 dark:bg-blue-950 dark:border-blue-800 dark:hover:bg-blue-900"
+                ? "bg-gray-600 border-gray-700 ring-2 ring-gray-400"
+                : "bg-gray-50 border-gray-200 hover:bg-gray-100 dark:bg-gray-950 dark:border-gray-800 dark:hover:bg-gray-900"
             } border`}
           >
-            <div className={`text-xl font-bold ${isSelected ? "text-white" : "text-blue-700 dark:text-blue-300"}`}>
+            <div className={`text-xl font-bold ${isSelected ? "text-white" : "text-gray-700 dark:text-gray-300"}`}>
               {config.format(value)}
             </div>
-            <div className={`text-xs ${isSelected ? "text-blue-100" : "text-blue-600 dark:text-blue-400"}`}>
+            <div className={`text-xs ${isSelected ? "text-gray-100" : "text-gray-600 dark:text-gray-400"}`}>
               {config.label}
             </div>
-            <div className={`text-[10px] ${isSelected ? "text-blue-200" : "text-muted-foreground"}`}>
+            <div className={`text-[10px] ${isSelected ? "text-gray-200" : "text-muted-foreground"}`}>
               {latestRecord.Period}
             </div>
           </button>
@@ -205,7 +205,7 @@ export function WebAnalyticsSection() {
               </div>
               {latestRecord && (
                 <div className="text-right">
-                  <p className="text-3xl font-bold text-blue-600">
+                  <p className="text-3xl font-bold text-gray-600">
                     {METRIC_CONFIGS[selectedMetric].format(latestRecord[selectedMetric] ?? 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">Latest: {latestRecord.Period}</p>
@@ -329,24 +329,24 @@ export function WebAnalyticsSection() {
             <div className="border rounded-lg p-4">
               <h5 className="font-semibold mb-3">Conversion Funnel</h5>
               <div className="grid grid-cols-4 gap-2">
-                <div className="text-center p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                  <p className="text-2xl font-bold text-blue-600">{(latestRecord.Sessions ?? 0).toLocaleString()}</p>
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-950 rounded-lg">
+                  <p className="text-2xl font-bold text-gray-600">{(latestRecord.Sessions ?? 0).toLocaleString()}</p>
                   <p className="text-xs text-muted-foreground">Sessions</p>
                 </div>
-                <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
-                  <p className="text-2xl font-bold text-yellow-600">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-950 rounded-lg">
+                  <p className="text-2xl font-bold text-gray-600">
                     {(latestRecord["Add to Cart Rate"] ?? 0).toFixed(1)}%
                   </p>
                   <p className="text-xs text-muted-foreground">Add to Cart</p>
                 </div>
-                <div className="text-center p-3 bg-purple-50 dark:bg-purple-950 rounded-lg">
-                  <p className="text-2xl font-bold text-purple-600">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-950 rounded-lg">
+                  <p className="text-2xl font-bold text-gray-600">
                     {(latestRecord["Checkout Rate"] ?? 0).toFixed(1)}%
                   </p>
                   <p className="text-xs text-muted-foreground">Checkout</p>
                 </div>
-                <div className="text-center p-3 bg-green-50 dark:bg-green-950 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">
+                <div className="text-center p-3 bg-gray-50 dark:bg-gray-950 rounded-lg">
+                  <p className="text-2xl font-bold text-gray-600">
                     {(latestRecord["Conversion Rate"] ?? 0).toFixed(2)}%
                   </p>
                   <p className="text-xs text-muted-foreground">Converted</p>
@@ -372,7 +372,7 @@ export function WebAnalyticsSection() {
                     href={record.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
+                    className="text-gray-500 hover:underline"
                   >
                     View
                   </a>

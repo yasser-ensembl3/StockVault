@@ -69,14 +69,14 @@ export default function InvestmentReportPage({ params }: PageProps) {
   const company = data?.company
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
             &larr; Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold">{company?.displayName || companyName}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{company?.displayName || companyName}</h1>
           <p className="text-muted-foreground">Investment Report 2025</p>
         </div>
       </div>
@@ -87,20 +87,20 @@ export default function InvestmentReportPage({ params }: PageProps) {
         </div>
       ) : error ? (
         <Card>
-          <CardContent className="py-12 text-center text-red-500">
+          <CardContent className="py-12 text-center text-muted-foreground">
             {error}
           </CardContent>
         </Card>
       ) : report ? (
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="flex flex-wrap gap-1">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="financial">Financial</TabsTrigger>
-            <TabsTrigger value="milestones">Milestones</TabsTrigger>
-            <TabsTrigger value="product">Product</TabsTrigger>
-            <TabsTrigger value="customers">Customers</TabsTrigger>
-            <TabsTrigger value="signals">Signals</TabsTrigger>
-            <TabsTrigger value="raw">Raw</TabsTrigger>
+          <TabsList className="flex flex-wrap gap-1 h-auto">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="financial" className="text-xs sm:text-sm">Financial</TabsTrigger>
+            <TabsTrigger value="milestones" className="text-xs sm:text-sm">Milestones</TabsTrigger>
+            <TabsTrigger value="product" className="text-xs sm:text-sm">Product</TabsTrigger>
+            <TabsTrigger value="customers" className="text-xs sm:text-sm">Customers</TabsTrigger>
+            <TabsTrigger value="signals" className="text-xs sm:text-sm">Signals</TabsTrigger>
+            <TabsTrigger value="raw" className="text-xs sm:text-sm">Raw</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -140,7 +140,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
               {report.keySignals.positive.length > 0 && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-green-500 flex items-center gap-2">
+                    <CardTitle className="text-foreground flex items-center gap-2">
                       <span>Positive Indicators</span>
                       <Badge variant="default">{report.keySignals.positive.length}</Badge>
                     </CardTitle>
@@ -149,7 +149,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                     <ul className="space-y-2">
                       {report.keySignals.positive.slice(0, 5).map((item, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                          <span className="text-green-500 shrink-0">+</span>
+                          <span className="text-foreground shrink-0">+</span>
                           {item}
                         </li>
                       ))}
@@ -161,7 +161,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
               {report.keySignals.watchItems.length > 0 && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-yellow-500 flex items-center gap-2">
+                    <CardTitle className="text-muted-foreground flex items-center gap-2">
                       <span>Watch Items</span>
                       <Badge variant="secondary">{report.keySignals.watchItems.length}</Badge>
                     </CardTitle>
@@ -170,7 +170,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                     <ul className="space-y-2">
                       {report.keySignals.watchItems.slice(0, 5).map((item, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                          <span className="text-yellow-500 shrink-0">!</span>
+                          <span className="text-muted-foreground shrink-0">!</span>
                           {item}
                         </li>
                       ))}
@@ -190,7 +190,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                   <ul className="space-y-2">
                     {report.keySignals.strategicObservations.map((obs, i) => (
                       <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                        <span className="text-blue-500 shrink-0">•</span>
+                        <span className="text-muted-foreground shrink-0">•</span>
                         {obs}
                       </li>
                     ))}
@@ -279,7 +279,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                     <ul className="space-y-2">
                       {milestones.map((milestone, i) => (
                         <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                          <span className="text-blue-500 shrink-0">•</span>
+                          <span className="text-muted-foreground shrink-0">•</span>
                           <span dangerouslySetInnerHTML={{
                             __html: milestone.replace(/\*\*(.+?)\*\*/g, '<strong class="text-foreground">$1</strong>')
                           }} />
@@ -312,7 +312,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                         if (line.startsWith('- ')) {
                           return (
                             <div key={i} className="flex gap-2 mb-1">
-                              <span className="text-blue-500 shrink-0">•</span>
+                              <span className="text-muted-foreground shrink-0">•</span>
                               <span dangerouslySetInnerHTML={{
                                 __html: line.replace(/^- /, '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-foreground">$1</strong>')
                               }} />
@@ -382,7 +382,7 @@ export default function InvestmentReportPage({ params }: PageProps) {
                       if (line.startsWith('- ')) {
                         return (
                           <div key={i} className="flex gap-2 mb-2">
-                            <span className="text-blue-500 shrink-0">•</span>
+                            <span className="text-muted-foreground shrink-0">•</span>
                             <span dangerouslySetInnerHTML={{
                               __html: line.replace(/^- /, '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-foreground">$1</strong>')
                             }} />
@@ -405,13 +405,13 @@ export default function InvestmentReportPage({ params }: PageProps) {
             {report.keySignals.positive.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-green-500">Positive Indicators</CardTitle>
+                  <CardTitle className="text-foreground">Positive Indicators</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {report.keySignals.positive.map((item, i) => (
                       <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                        <span className="text-green-500 shrink-0">+</span>
+                        <span className="text-foreground shrink-0">+</span>
                         {item}
                       </li>
                     ))}
@@ -424,13 +424,13 @@ export default function InvestmentReportPage({ params }: PageProps) {
             {report.keySignals.watchItems.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-yellow-500">Watch Items</CardTitle>
+                  <CardTitle className="text-muted-foreground">Watch Items</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {report.keySignals.watchItems.map((item, i) => (
                       <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                        <span className="text-yellow-500 shrink-0">!</span>
+                        <span className="text-muted-foreground shrink-0">!</span>
                         {item}
                       </li>
                     ))}
@@ -443,13 +443,13 @@ export default function InvestmentReportPage({ params }: PageProps) {
             {report.keySignals.strategicObservations.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-blue-500">Strategic Observations</CardTitle>
+                  <CardTitle className="text-muted-foreground">Strategic Observations</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {report.keySignals.strategicObservations.map((item, i) => (
                       <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                        <span className="text-blue-500 shrink-0">•</span>
+                        <span className="text-muted-foreground shrink-0">•</span>
                         {item}
                       </li>
                     ))}

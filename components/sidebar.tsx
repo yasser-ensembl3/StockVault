@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import { ChevronDown, ChevronRight, Building2, GitCompare, TrendingUp, Briefcase } from "lucide-react"
+import { ChevronDown, ChevronRight, Building2, GitCompare, TrendingUp, Briefcase, X } from "lucide-react"
 
 type Company = {
   name: string
@@ -17,7 +17,12 @@ type InvestmentCompany = {
   displayName: string
 }
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [companies, setCompanies] = useState<Company[]>([])
   const [investmentCompanies, setInvestmentCompanies] = useState<InvestmentCompany[]>([])
@@ -66,159 +71,197 @@ export function Sidebar() {
     }
   }, [pathname])
 
+  // Close sidebar on navigation (mobile)
+  useEffect(() => {
+    if (onClose) {
+      onClose()
+    }
+  }, [pathname])
+
+  const handleLinkClick = () => {
+    if (onClose) {
+      onClose()
+    }
+  }
+
   return (
-    <aside className="w-64 min-h-screen border-r border-border bg-card p-4 flex-shrink-0">
-      <div className="mb-6">
-        <Link href="/compare" className="flex items-center gap-2">
-          <span className="text-2xl">📈</span>
-          <span className="font-bold text-xl">Quarterly Vault</span>
-        </Link>
-        <p className="text-xs text-muted-foreground mt-1">Financial Insights</p>
-      </div>
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && onClose && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="space-y-1">
-        {/* Stock Company - Collapsible */}
-        <div>
-          <button
-            onClick={() => setIsStockOpen(!isStockOpen)}
+      <aside className={cn(
+        "fixed lg:static inset-y-0 left-0 z-50 w-64 min-h-screen border-r border-border bg-card p-4 flex-shrink-0 transform transition-transform duration-300 ease-in-out lg:transform-none",
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      )}>
+        <div className="mb-6 flex items-center justify-between">
+          <Link href="/compare" className="flex items-center gap-2" onClick={handleLinkClick}>
+            <span className="font-bold text-xl">Stoic Vault</span>
+          </Link>
+          {/* Close button for mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lg:hidden p-1 rounded-md hover:bg-muted"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-muted-foreground -mt-4 mb-6">Financial Insights</p>
+
+        <nav className="space-y-1">
+          {/* Stock Company - Collapsible */}
+          <div>
+            <button
+              onClick={() => setIsStockOpen(!isStockOpen)}
+              className={cn(
+                "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
+                pathname?.startsWith("/company")
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <Building2 className="h-4 w-4" />
+                <span>Stock company</span>
+              </div>
+              {isStockOpen ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+
+            {isStockOpen && (
+              <div className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
+                {isLoading ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    Loading...
+                  </div>
+                ) : companies.length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    No companies found
+                  </div>
+                ) : (
+                  companies.map((company) => {
+                    const href = `/company/${encodeURIComponent(company.name)}`
+                    const isActive = pathname === href
+
+                    return (
+                      <Link
+                        key={company.folderId}
+                        href={href}
+                        onClick={handleLinkClick}
+                        className={cn(
+                          "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                          isActive
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {company.name}
+                      </Link>
+                    )
+                  })
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Investment Reports - Collapsible */}
+          <div>
+            <button
+              onClick={() => setIsInvestmentOpen(!isInvestmentOpen)}
+              className={cn(
+                "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
+                pathname?.startsWith("/investment")
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <Briefcase className="h-4 w-4" />
+                <span>Investment Reports</span>
+              </div>
+              {isInvestmentOpen ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+
+            {isInvestmentOpen && (
+              <div className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
+                {isInvestmentLoading ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    Loading...
+                  </div>
+                ) : investmentCompanies.length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    No reports found
+                  </div>
+                ) : (
+                  investmentCompanies.map((company) => {
+                    const href = `/investment/${encodeURIComponent(company.name)}`
+                    const isActive = pathname === href
+
+                    return (
+                      <Link
+                        key={company.id}
+                        href={href}
+                        onClick={handleLinkClick}
+                        className={cn(
+                          "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                          isActive
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {company.displayName}
+                      </Link>
+                    )
+                  })
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Compare */}
+          <Link
+            href="/compare"
+            onClick={handleLinkClick}
             className={cn(
-              "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
-              pathname?.startsWith("/company")
+              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+              pathname === "/compare"
                 ? "bg-primary/10 text-primary font-medium"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
-            <div className="flex items-center gap-3">
-              <Building2 className="h-4 w-4" />
-              <span>Stock company</span>
-            </div>
-            {isStockOpen ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </button>
+            <GitCompare className="h-4 w-4" />
+            <span>Compare</span>
+          </Link>
 
-          {isStockOpen && (
-            <div className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
-              {isLoading ? (
-                <div className="px-3 py-2 text-xs text-muted-foreground">
-                  Loading...
-                </div>
-              ) : companies.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-muted-foreground">
-                  No companies found
-                </div>
-              ) : (
-                companies.map((company) => {
-                  const href = `/company/${encodeURIComponent(company.name)}`
-                  const isActive = pathname === href
-
-                  return (
-                    <Link
-                      key={company.folderId}
-                      href={href}
-                      className={cn(
-                        "block px-3 py-1.5 rounded-md text-sm transition-colors",
-                        isActive
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {company.name}
-                    </Link>
-                  )
-                })
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Investment Reports - Collapsible */}
-        <div>
-          <button
-            onClick={() => setIsInvestmentOpen(!isInvestmentOpen)}
+          {/* Trends */}
+          <Link
+            href="/trends"
+            onClick={handleLinkClick}
             className={cn(
-              "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
-              pathname?.startsWith("/investment")
+              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+              pathname === "/trends"
                 ? "bg-primary/10 text-primary font-medium"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
-            <div className="flex items-center gap-3">
-              <Briefcase className="h-4 w-4" />
-              <span>Investment Reports</span>
-            </div>
-            {isInvestmentOpen ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </button>
-
-          {isInvestmentOpen && (
-            <div className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
-              {isInvestmentLoading ? (
-                <div className="px-3 py-2 text-xs text-muted-foreground">
-                  Loading...
-                </div>
-              ) : investmentCompanies.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-muted-foreground">
-                  No reports found
-                </div>
-              ) : (
-                investmentCompanies.map((company) => {
-                  const href = `/investment/${encodeURIComponent(company.name)}`
-                  const isActive = pathname === href
-
-                  return (
-                    <Link
-                      key={company.id}
-                      href={href}
-                      className={cn(
-                        "block px-3 py-1.5 rounded-md text-sm transition-colors",
-                        isActive
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {company.displayName}
-                    </Link>
-                  )
-                })
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Compare */}
-        <Link
-          href="/compare"
-          className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-            pathname === "/compare"
-              ? "bg-primary/10 text-primary font-medium"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          )}
-        >
-          <GitCompare className="h-4 w-4" />
-          <span>Compare</span>
-        </Link>
-
-        {/* Trends */}
-        <Link
-          href="/trends"
-          className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-            pathname === "/trends"
-              ? "bg-primary/10 text-primary font-medium"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          )}
-        >
-          <TrendingUp className="h-4 w-4" />
-          <span>Trends</span>
-        </Link>
-      </nav>
-    </aside>
+            <TrendingUp className="h-4 w-4" />
+            <span>Trends</span>
+          </Link>
+        </nav>
+      </aside>
+    </>
   )
 }

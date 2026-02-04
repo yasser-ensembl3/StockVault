@@ -48,9 +48,9 @@ const ESSENTIAL_TYPES = [
 ]
 
 const PRIORITIES = [
-  { value: "Critical", label: "Critical", color: "bg-red-100 text-red-700 border-red-300" },
-  { value: "High", label: "High", color: "bg-orange-100 text-orange-700 border-orange-300" },
-  { value: "Medium", label: "Medium", color: "bg-yellow-100 text-yellow-700 border-yellow-300" },
+  { value: "Critical", label: "Critical", color: "bg-gray-100 text-gray-700 border-gray-300" },
+  { value: "High", label: "High", color: "bg-gray-100 text-gray-700 border-gray-300" },
+  { value: "Medium", label: "Medium", color: "bg-gray-100 text-gray-700 border-gray-300" },
 ]
 
 export function EssentialsSection() {
@@ -182,7 +182,7 @@ export function EssentialsSection() {
         <DialogContent className="sm:max-w-[525px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-yellow-500" />
+              <Sparkles className="h-5 w-5 text-gray-500" />
               Add Essential Item
             </DialogTitle>
             <DialogDescription>
@@ -285,7 +285,7 @@ export function EssentialsSection() {
         <DialogContent className="sm:max-w-[525px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-yellow-500" />
+              <Sparkles className="h-5 w-5 text-gray-500" />
               Add Essential Item
             </DialogTitle>
             <DialogDescription>
@@ -393,7 +393,7 @@ export function EssentialsSection() {
                     href={essential.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                   >
                     <ExternalLink className="h-4 w-4" />
                     <span className="font-medium">Open Link</span>

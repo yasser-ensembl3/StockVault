@@ -92,14 +92,14 @@ export default function ChatPage() {
   ]
 
   return (
-    <div className="flex flex-col h-[calc(100vh-2rem)] p-6">
+    <div className="flex flex-col h-[calc(100vh-4rem)] lg:h-[calc(100vh-2rem)] p-4 sm:p-6">
       {/* Header */}
       <div className="mb-4">
         <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
           &larr; Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold">Financial Assistant</h1>
-        <p className="text-muted-foreground">Ask questions about quarterly financial data</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Financial Assistant</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">Ask questions about quarterly financial data</p>
       </div>
 
       {/* Chat Container */}
@@ -150,7 +150,7 @@ export default function ChatPage() {
                             ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
                             ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
                             li: ({ children }) => <li className="text-sm">{children}</li>,
-                            strong: ({ children }) => <strong className="font-semibold text-blue-400">{children}</strong>,
+                            strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
                             table: ({ children }) => (
                               <div className="overflow-x-auto my-2">
                                 <table className="min-w-full text-sm border border-border">{children}</table>

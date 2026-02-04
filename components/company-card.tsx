@@ -27,12 +27,12 @@ export function CompanyCard({ company, quarter }: CompanyCardProps) {
         <CardContent>
           <div className="flex gap-2 flex-wrap">
             {company.hasFinancial && (
-              <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+              <Badge variant="default">
                 Financial
               </Badge>
             )}
             {company.hasStrategic && (
-              <Badge variant="default" className="bg-blue-600 hover:bg-blue-700">
+              <Badge variant="outline">
                 Strategic
               </Badge>
             )}

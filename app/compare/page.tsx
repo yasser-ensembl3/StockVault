@@ -37,7 +37,7 @@ interface Company {
 
 type FinancialData = any
 
-const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"]
+const COLORS = ["#ffffff", "#d1d5db", "#9ca3af", "#6b7280"]
 
 function CompareContent() {
   const searchParams = useSearchParams()
@@ -222,22 +222,15 @@ function CompareContent() {
     },
   ]
 
-  // Prepare multi-metric comparison data
-  const multiMetricData = [
-    { metric: "Revenue ($M)", ...Object.fromEntries(selectedCompanies.map(c => [c, getValue(companyData[c], "income_statement.revenue.value") || 0])) },
-    { metric: "Net Income ($M)", ...Object.fromEntries(selectedCompanies.map(c => [c, getValue(companyData[c], "income_statement.net_income.value") || 0])) },
-    { metric: "Op. Income ($M)", ...Object.fromEntries(selectedCompanies.map(c => [c, getValue(companyData[c], "income_statement.operating_income.value") || 0])) },
-  ]
-
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div>
         <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
           &larr; Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold">Compare Companies</h1>
-        <p className="text-muted-foreground">{quarter} - Select up to 4 companies to compare</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Compare Companies</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">{quarter} - Select up to 4 companies to compare</p>
       </div>
 
       {/* Company Selector */}
@@ -257,7 +250,7 @@ function CompareContent() {
                 {company}
                 <button
                   onClick={() => removeCompany(company)}
-                  className="ml-2 hover:text-red-500"
+                  className="ml-2 hover:opacity-70"
                 >
                   ×
                 </button>
@@ -307,7 +300,7 @@ function CompareContent() {
                       contentStyle={{ backgroundColor: '#1f2937', border: 'none' }}
                       formatter={(value: number) => [`$${value.toFixed(0)}M`, 'Revenue']}
                     />
-                    <Bar dataKey="revenue" fill="#3b82f6" radius={[4, 4, 0, 0]}>
+                    <Bar dataKey="revenue" fill="#9ca3af" radius={[4, 4, 0, 0]}>
                       {revenueChartData.map((_, index) => (
                         <Bar key={index} dataKey="revenue" fill={COLORS[index % COLORS.length]} />
                       ))}
@@ -331,7 +324,7 @@ function CompareContent() {
                       contentStyle={{ backgroundColor: '#1f2937', border: 'none' }}
                       formatter={(value: number) => [`$${value.toFixed(0)}M`, 'Net Income']}
                     />
-                    <Bar dataKey="netIncome" fill="#10b981" radius={[4, 4, 0, 0]}>
+                    <Bar dataKey="netIncome" fill="#6b7280" radius={[4, 4, 0, 0]}>
                       {netIncomeChartData.map((_, index) => (
                         <Bar key={index} dataKey="netIncome" fill={COLORS[index % COLORS.length]} />
                       ))}
@@ -358,9 +351,9 @@ function CompareContent() {
                     formatter={(value: number) => [`${value.toFixed(1)}%`]}
                   />
                   <Legend />
-                  <Bar dataKey="revenueYoY" name="Revenue YoY" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="netIncomeYoY" name="Net Income YoY" fill="#10b981" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="epsYoY" name="EPS YoY" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="revenueYoY" name="Revenue YoY" fill="#ffffff" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="netIncomeYoY" name="Net Income YoY" fill="#9ca3af" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="epsYoY" name="EPS YoY" fill="#4b5563" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -439,22 +432,10 @@ function CompareContent() {
                             formatted = value !== null ? value.toLocaleString() : "N/A"
                           }
 
-                          const isPositive = value !== null && value > 0
-                          const isNegative = value !== null && value < 0
-                          const isGrowthMetric = metric.label.includes("YoY")
-
                           return (
                             <td
                               key={company}
-                              className={`text-right py-3 px-4 font-medium ${
-                                isGrowthMetric
-                                  ? isPositive
-                                    ? "text-green-500"
-                                    : isNegative
-                                    ? "text-red-500"
-                                    : ""
-                                  : ""
-                              }`}
+                              className="text-right py-3 px-4 font-medium"
                             >
                               {formatted}
                             </td>

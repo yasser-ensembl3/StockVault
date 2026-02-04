@@ -95,14 +95,14 @@ export default function CompanyPage({ params }: PageProps) {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
             &larr; Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold">{companyName}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{companyName}</h1>
           <p className="text-muted-foreground">{quarter} Financial Report</p>
         </div>
       </div>
@@ -113,14 +113,14 @@ export default function CompanyPage({ params }: PageProps) {
         </div>
       ) : (
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="flex flex-wrap gap-1">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="financial">Financial</TabsTrigger>
-            <TabsTrigger value="strategic">Strategic</TabsTrigger>
-            <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="competitive">Competitive</TabsTrigger>
-            <TabsTrigger value="risks">Risks</TabsTrigger>
-            <TabsTrigger value="investor">Investor</TabsTrigger>
+          <TabsList className="flex flex-wrap gap-1 h-auto">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="financial" className="text-xs sm:text-sm">Financial</TabsTrigger>
+            <TabsTrigger value="strategic" className="text-xs sm:text-sm">Strategic</TabsTrigger>
+            <TabsTrigger value="products" className="text-xs sm:text-sm">Products</TabsTrigger>
+            <TabsTrigger value="competitive" className="text-xs sm:text-sm">Competitive</TabsTrigger>
+            <TabsTrigger value="risks" className="text-xs sm:text-sm">Risks</TabsTrigger>
+            <TabsTrigger value="investor" className="text-xs sm:text-sm">Investor</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -257,7 +257,7 @@ export default function CompanyPage({ params }: PageProps) {
                   <ul className="space-y-2">
                     {strategic.key_takeaways.slice(0, 10).map((takeaway: string, i: number) => (
                       <li key={i} className="flex gap-2">
-                        <span className="text-blue-500 shrink-0">•</span>
+                        <span className="text-muted-foreground shrink-0">•</span>
                         <span className="text-muted-foreground text-sm">{renderText(takeaway)}</span>
                       </li>
                     ))}
@@ -584,7 +584,7 @@ export default function CompanyPage({ params }: PageProps) {
                     <CardContent>
                       <div className="space-y-4">
                         {strategic.strategic_initiatives.slice(0, 10).map((init: { initiative: string; status?: string; progress?: string; expected_impact?: string; timeline?: string }, i: number) => (
-                          <div key={i} className="border-l-2 border-blue-500 pl-4 py-2">
+                          <div key={i} className="border-l-2 border-border pl-4 py-2">
                             <div className="flex items-center gap-2 mb-1">
                               <p className="font-medium">{init.initiative}</p>
                               {init.status && (
@@ -600,7 +600,7 @@ export default function CompanyPage({ params }: PageProps) {
                               <p className="text-sm text-muted-foreground">{init.progress}</p>
                             )}
                             {init.expected_impact && (
-                              <p className="text-xs text-blue-400 mt-1">Impact: {init.expected_impact}</p>
+                              <p className="text-xs text-muted-foreground mt-1">Impact: {init.expected_impact}</p>
                             )}
                           </div>
                         ))}
@@ -623,13 +623,13 @@ export default function CompanyPage({ params }: PageProps) {
                     <CardContent className="space-y-4">
                       {strategic.management_commentary.ceo_message && (
                         <div>
-                          <p className="text-sm font-medium text-blue-400">CEO Message</p>
+                          <p className="text-sm font-medium text-muted-foreground">CEO Message</p>
                           <p className="text-muted-foreground">{strategic.management_commentary.ceo_message}</p>
                         </div>
                       )}
                       {strategic.management_commentary.cfo_message && (
                         <div>
-                          <p className="text-sm font-medium text-green-400">CFO Message</p>
+                          <p className="text-sm font-medium text-muted-foreground">CFO Message</p>
                           <p className="text-muted-foreground">{strategic.management_commentary.cfo_message}</p>
                         </div>
                       )}
@@ -639,7 +639,7 @@ export default function CompanyPage({ params }: PageProps) {
                           <ul className="space-y-1">
                             {strategic.management_commentary.priorities.slice(0, 10).map((priority: string, i: number) => (
                               <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                                <span className="text-blue-500">•</span>
+                                <span className="text-muted-foreground">•</span>
                                 {renderText(priority)}
                               </li>
                             ))}
@@ -659,7 +659,7 @@ export default function CompanyPage({ params }: PageProps) {
                     <CardContent>
                       <div className="space-y-4">
                         {strategic.notable_quotes.slice(0, 8).map((item: { speaker?: string; quote?: string; context?: string } | string, i: number) => (
-                          <div key={i} className="border-l-2 border-blue-500 pl-4">
+                          <div key={i} className="border-l-2 border-border pl-4">
                             {typeof item === 'string' ? (
                               <p className="italic text-muted-foreground">&ldquo;{item}&rdquo;</p>
                             ) : (
@@ -697,7 +697,7 @@ export default function CompanyPage({ params }: PageProps) {
                                   {acq.status && <Badge variant="outline" className="text-xs">{acq.status}</Badge>}
                                 </div>
                                 {acq.rationale && <p className="text-sm text-muted-foreground">{acq.rationale}</p>}
-                                {acq.expected_synergies && <p className="text-xs text-green-400 mt-1">{acq.expected_synergies}</p>}
+                                {acq.expected_synergies && <p className="text-xs text-muted-foreground mt-1">{acq.expected_synergies}</p>}
                               </div>
                             ))}
                           </div>
@@ -716,7 +716,7 @@ export default function CompanyPage({ params }: PageProps) {
                               <div key={i} className="bg-muted/50 p-3 rounded">
                                 <p className="font-medium">{p.partner}</p>
                                 {p.nature && <p className="text-sm text-muted-foreground">{p.nature}</p>}
-                                {p.significance && <p className="text-xs text-blue-400 mt-1">{p.significance}</p>}
+                                {p.significance && <p className="text-xs text-muted-foreground mt-1">{p.significance}</p>}
                               </div>
                             ))}
                           </div>
@@ -791,7 +791,7 @@ export default function CompanyPage({ params }: PageProps) {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {strategic.product_and_innovation.new_launches.slice(0, 10).map((product: { product: string; description?: string; target_market?: string; competitive_advantage?: string; reception?: string }, i: number) => (
                           <div key={i} className="border rounded-lg p-4">
-                            <p className="font-medium text-blue-400">{product.product}</p>
+                            <p className="font-medium text-muted-foreground">{product.product}</p>
                             {product.description && (
                               <p className="text-sm text-muted-foreground mt-1">{product.description}</p>
                             )}
@@ -799,7 +799,7 @@ export default function CompanyPage({ params }: PageProps) {
                               <p className="text-xs mt-2"><span className="text-muted-foreground">Target:</span> {product.target_market}</p>
                             )}
                             {product.competitive_advantage && (
-                              <p className="text-xs text-green-400 mt-1">{product.competitive_advantage}</p>
+                              <p className="text-xs text-muted-foreground mt-1">{product.competitive_advantage}</p>
                             )}
                           </div>
                         ))}
@@ -854,7 +854,7 @@ export default function CompanyPage({ params }: PageProps) {
                     <CardContent>
                       <p className="text-muted-foreground">{strategic.competitive_landscape.market_position}</p>
                       {strategic.competitive_landscape.market_share_commentary && (
-                        <p className="text-sm text-blue-400 mt-2">{strategic.competitive_landscape.market_share_commentary}</p>
+                        <p className="text-sm text-muted-foreground mt-2">{strategic.competitive_landscape.market_share_commentary}</p>
                       )}
                     </CardContent>
                   </Card>
@@ -865,13 +865,13 @@ export default function CompanyPage({ params }: PageProps) {
                   {strategic.competitive_landscape.competitive_advantages && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-green-500">Competitive Advantages</CardTitle>
+                        <CardTitle className="text-foreground">Competitive Advantages</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-2">
                           {strategic.competitive_landscape.competitive_advantages.slice(0, 10).map((adv: string, i: number) => (
                             <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                              <span className="text-green-500 shrink-0">+</span>
+                              <span className="text-foreground shrink-0">+</span>
                               {renderText(adv)}
                             </li>
                           ))}
@@ -883,13 +883,13 @@ export default function CompanyPage({ params }: PageProps) {
                   {strategic.competitive_landscape.competitive_threats && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-red-500">Competitive Threats</CardTitle>
+                        <CardTitle className="text-foreground">Competitive Threats</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-2">
                           {strategic.competitive_landscape.competitive_threats.slice(0, 10).map((threat: string, i: number) => (
                             <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                              <span className="text-red-500 shrink-0">-</span>
+                              <span className="text-foreground shrink-0">-</span>
                               {renderText(threat)}
                             </li>
                           ))}
@@ -911,7 +911,7 @@ export default function CompanyPage({ params }: PageProps) {
                           <div key={i} className="bg-muted/50 p-3 rounded">
                             <p className="font-medium text-sm">{trend.trend}</p>
                             {trend.company_positioning && (
-                              <p className="text-xs text-blue-400 mt-1">{trend.company_positioning}</p>
+                              <p className="text-xs text-muted-foreground mt-1">{trend.company_positioning}</p>
                             )}
                           </div>
                         ))}
@@ -939,7 +939,7 @@ export default function CompanyPage({ params }: PageProps) {
                 <CardContent>
                   <div className="space-y-4">
                     {strategic.risks_and_challenges.slice(0, 15).map((risk: { risk: string; category?: string; severity?: string; management_response?: string; mitigation?: string }, i: number) => (
-                      <div key={i} className="border-l-2 border-red-500 pl-4 py-2">
+                      <div key={i} className="border-l-2 border-border pl-4 py-2">
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <p className="font-medium">{risk.risk}</p>
                           {risk.category && (
@@ -958,7 +958,7 @@ export default function CompanyPage({ params }: PageProps) {
                           <p className="text-sm text-muted-foreground">{risk.management_response}</p>
                         )}
                         {risk.mitigation && (
-                          <p className="text-xs text-green-400 mt-1">Mitigation: {risk.mitigation}</p>
+                          <p className="text-xs text-muted-foreground mt-1">Mitigation: {risk.mitigation}</p>
                         )}
                       </div>
                     ))}
@@ -988,13 +988,13 @@ export default function CompanyPage({ params }: PageProps) {
                   {strategic.investor_highlights.bull_case && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-green-500">Bull Case ({strategic.investor_highlights.bull_case.length})</CardTitle>
+                        <CardTitle className="text-foreground">Bull Case ({strategic.investor_highlights.bull_case.length})</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-2">
                           {strategic.investor_highlights.bull_case.slice(0, 10).map((point: string, i: number) => (
                             <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                              <span className="text-green-500 shrink-0">+</span>
+                              <span className="text-foreground shrink-0">+</span>
                               {renderText(point)}
                             </li>
                           ))}
@@ -1006,13 +1006,13 @@ export default function CompanyPage({ params }: PageProps) {
                   {strategic.investor_highlights.bear_case && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-red-500">Bear Case ({strategic.investor_highlights.bear_case.length})</CardTitle>
+                        <CardTitle className="text-foreground">Bear Case ({strategic.investor_highlights.bear_case.length})</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-2">
                           {strategic.investor_highlights.bear_case.slice(0, 10).map((point: string, i: number) => (
                             <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                              <span className="text-red-500 shrink-0">-</span>
+                              <span className="text-foreground shrink-0">-</span>
                               {renderText(point)}
                             </li>
                           ))}
@@ -1058,7 +1058,7 @@ export default function CompanyPage({ params }: PageProps) {
                       <ul className="space-y-2">
                         {strategic.investor_highlights.key_questions.slice(0, 10).map((q: string, i: number) => (
                           <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                            <span className="text-blue-500 shrink-0">?</span>
+                            <span className="text-muted-foreground shrink-0">?</span>
                             {renderText(q)}
                           </li>
                         ))}
@@ -1084,19 +1084,19 @@ export default function CompanyPage({ params }: PageProps) {
                 <CardContent className="space-y-3">
                   {strategic.esg_and_sustainability.environmental && (
                     <div>
-                      <p className="text-sm font-medium text-green-400">Environmental</p>
+                      <p className="text-sm font-medium text-muted-foreground">Environmental</p>
                       <p className="text-sm text-muted-foreground">{strategic.esg_and_sustainability.environmental}</p>
                     </div>
                   )}
                   {strategic.esg_and_sustainability.social && (
                     <div>
-                      <p className="text-sm font-medium text-blue-400">Social</p>
+                      <p className="text-sm font-medium text-muted-foreground">Social</p>
                       <p className="text-sm text-muted-foreground">{strategic.esg_and_sustainability.social}</p>
                     </div>
                   )}
                   {strategic.esg_and_sustainability.governance && (
                     <div>
-                      <p className="text-sm font-medium text-purple-400">Governance</p>
+                      <p className="text-sm font-medium text-muted-foreground">Governance</p>
                       <p className="text-sm text-muted-foreground">{strategic.esg_and_sustainability.governance}</p>
                     </div>
                   )}

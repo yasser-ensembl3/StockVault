@@ -24,17 +24,17 @@ interface Link {
 
 const LINK_TYPES = [
   { value: "notion", label: "Notion", icon: "📓", color: "bg-gray-100 text-gray-700" },
-  { value: "drive", label: "Google Drive", icon: "📁", color: "bg-blue-100 text-blue-700" },
-  { value: "github", label: "GitHub", icon: "💻", color: "bg-purple-100 text-purple-700" },
-  { value: "slack", label: "Slack", icon: "💬", color: "bg-pink-100 text-pink-700" },
-  { value: "figma", label: "Figma", icon: "🎨", color: "bg-purple-100 text-purple-700" },
-  { value: "jira", label: "Jira", icon: "📋", color: "bg-blue-100 text-blue-700" },
-  { value: "confluence", label: "Confluence", icon: "📖", color: "bg-blue-100 text-blue-700" },
-  { value: "trello", label: "Trello", icon: "📊", color: "bg-blue-100 text-blue-700" },
-  { value: "asana", label: "Asana", icon: "✅", color: "bg-red-100 text-red-700" },
-  { value: "miro", label: "Miro", icon: "🖼️", color: "bg-yellow-100 text-yellow-700" },
-  { value: "docs", label: "Documentation", icon: "📄", color: "bg-green-100 text-green-700" },
-  { value: "api", label: "API", icon: "🔌", color: "bg-orange-100 text-orange-700" },
+  { value: "drive", label: "Google Drive", icon: "📁", color: "bg-gray-100 text-gray-700" },
+  { value: "github", label: "GitHub", icon: "💻", color: "bg-gray-100 text-gray-700" },
+  { value: "slack", label: "Slack", icon: "💬", color: "bg-gray-100 text-gray-700" },
+  { value: "figma", label: "Figma", icon: "🎨", color: "bg-gray-100 text-gray-700" },
+  { value: "jira", label: "Jira", icon: "📋", color: "bg-gray-100 text-gray-700" },
+  { value: "confluence", label: "Confluence", icon: "📖", color: "bg-gray-100 text-gray-700" },
+  { value: "trello", label: "Trello", icon: "📊", color: "bg-gray-100 text-gray-700" },
+  { value: "asana", label: "Asana", icon: "✅", color: "bg-gray-100 text-gray-700" },
+  { value: "miro", label: "Miro", icon: "🖼️", color: "bg-gray-100 text-gray-700" },
+  { value: "docs", label: "Documentation", icon: "📄", color: "bg-gray-100 text-gray-700" },
+  { value: "api", label: "API", icon: "🔌", color: "bg-gray-100 text-gray-700" },
   { value: "other", label: "Other", icon: "🔗", color: "bg-gray-100 text-gray-700" },
 ]
 
@@ -608,9 +608,9 @@ export function GuidesDocsSection() {
                     {/* En-tête de colonne Kanban distinctif */}
                     <div className={`rounded-lg p-3 mb-3 border-2 shadow-sm ${
                       cat.value === 'database' ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 border-indigo-700 text-white' :
-                      cat.value === 'tool' ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 border-emerald-700 text-white' :
+                      cat.value === 'tool' ? 'bg-gradient-to-r from-gray-500 to-gray-600 border-gray-700 text-white' :
                       cat.value === 'website' ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 border-cyan-700 text-white' :
-                      cat.value === 'social' ? 'bg-gradient-to-r from-pink-500 to-pink-600 border-pink-700 text-white' :
+                      cat.value === 'social' ? 'bg-gradient-to-r from-gray-500 to-gray-600 border-gray-700 text-white' :
                       cat.value === 'document' ? 'bg-gradient-to-r from-amber-500 to-amber-600 border-amber-700 text-white' :
                       'bg-gradient-to-r from-gray-500 to-gray-600 border-gray-700 text-white'
                     }`}>
@@ -646,7 +646,7 @@ export function GuidesDocsSection() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <h5 className="font-bold text-[11px] truncate text-gray-900 leading-tight">{link.title}</h5>
-                                    <p className="text-[9px] text-blue-600 truncate font-mono mt-0.5">
+                                    <p className="text-[9px] text-gray-600 truncate font-mono mt-0.5">
                                       {domain}
                                     </p>
                                   </div>
@@ -676,7 +676,7 @@ export function GuidesDocsSection() {
                                           size="sm"
                                           variant="ghost"
                                           onClick={() => handleDeleteLink(link.id)}
-                                          className="h-6 w-6 p-0 text-[10px] text-red-500 hover:text-red-700"
+                                          className="h-6 w-6 p-0 text-[10px] text-gray-500 hover:text-gray-700"
                                         >
                                           🗑️
                                         </Button>

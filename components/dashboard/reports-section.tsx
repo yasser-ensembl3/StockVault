@@ -87,19 +87,19 @@ export function ReportsSection() {
 
   const keyMetrics = (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="text-center p-3 rounded-lg bg-blue-50 border border-blue-200">
-        <div className="text-2xl font-bold text-blue-700">{reports.length}</div>
-        <div className="text-sm text-blue-600">Reports Generated</div>
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">{reports.length}</div>
+        <div className="text-sm text-gray-600">Reports Generated</div>
       </div>
-      <div className="text-center p-3 rounded-lg bg-green-50 border border-green-200">
-        <div className="text-2xl font-bold text-green-700">{config?.notionDatabases?.tasks ? "✓" : "—"}</div>
-        <div className="text-sm text-green-600">Data Source</div>
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">{config?.notionDatabases?.tasks ? "✓" : "—"}</div>
+        <div className="text-sm text-gray-600">Data Source</div>
       </div>
-      <div className="text-center p-3 rounded-lg bg-purple-50 border border-purple-200">
-        <div className="text-2xl font-bold text-purple-700">
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">
           {latestReport ? new Date(latestReport.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "—"}
         </div>
-        <div className="text-sm text-purple-600">Latest Report</div>
+        <div className="text-sm text-gray-600">Latest Report</div>
       </div>
     </div>
   )
@@ -135,8 +135,8 @@ export function ReportsSection() {
         {detailsOpen && (
           <div className="p-4 pt-0 space-y-4">
             {error && (
-              <div className="p-4 border border-red-500 rounded-lg bg-red-500/10">
-                <p className="text-sm text-red-500">{error}</p>
+              <div className="p-4 border border-gray-500 rounded-lg bg-gray-500/10">
+                <p className="text-sm text-gray-500">{error}</p>
               </div>
             )}
 
@@ -172,7 +172,7 @@ export function ReportsSection() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 p-0 text-gray-600 hover:text-gray-700"
                         onClick={() => deleteReport(report.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -247,8 +247,8 @@ export function ReportsSection() {
           </Button>
         </div>
         {error && (
-          <div className="mt-3 p-3 border border-red-500 rounded-lg bg-red-500/10">
-            <p className="text-xs text-red-500">{error}</p>
+          <div className="mt-3 p-3 border border-gray-500 rounded-lg bg-gray-500/10">
+            <p className="text-xs text-gray-500">{error}</p>
           </div>
         )}
       </div>

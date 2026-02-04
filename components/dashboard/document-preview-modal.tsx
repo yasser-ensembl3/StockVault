@@ -108,7 +108,7 @@ function renderNotionBlock(block: NotionBlock): React.ReactNode {
       if (text.annotations?.bold) content = <strong key={i}>{content}</strong>
       if (text.annotations?.italic) content = <em key={i}>{content}</em>
       if (text.annotations?.code) content = <code key={i} className="bg-muted px-1 rounded">{content}</code>
-      if (text.href) content = <a key={i} href={text.href} className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">{content}</a>
+      if (text.href) content = <a key={i} href={text.href} className="text-gray-500 underline" target="_blank" rel="noopener noreferrer">{content}</a>
       return <span key={i}>{content}</span>
     })
   }
@@ -189,7 +189,7 @@ function renderNotionBlock(block: NotionBlock): React.ReactNode {
     case "link_preview":
       const linkUrl = block.bookmark?.url || block.link_preview?.url
       return linkUrl ? (
-        <a key={id} href={linkUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline block mb-2 text-sm">
+        <a key={id} href={linkUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 underline block mb-2 text-sm">
           {linkUrl}
         </a>
       ) : null
@@ -240,7 +240,7 @@ function NotionContentViewer({ pageId, onLoad }: { pageId: string; onLoad: () =>
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-        <p className="text-red-500 mb-2">Erreur: {error}</p>
+        <p className="text-gray-500 mb-2">Erreur: {error}</p>
         <p className="text-sm text-muted-foreground">Impossible de charger le contenu Notion</p>
       </div>
     )

@@ -69,31 +69,31 @@ export function OrdersSection() {
       {/* Unfulfilled - Most important, shown first */}
       <div className={`p-3 rounded-lg border ${
         unfulfilledOrders.length > 0
-          ? "bg-orange-100 border-orange-300 dark:bg-orange-950 dark:border-orange-800"
-          : "bg-emerald-50 border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800"
+          ? "bg-gray-100 border-gray-300 dark:bg-gray-950 dark:border-gray-800"
+          : "bg-gray-50 border-gray-200 dark:bg-gray-950 dark:border-gray-800"
       }`}>
         <div className={`text-2xl font-bold ${
-          unfulfilledOrders.length > 0 ? "text-orange-600 dark:text-orange-400" : "text-emerald-600 dark:text-emerald-400"
+          unfulfilledOrders.length > 0 ? "text-gray-600 dark:text-gray-400" : "text-gray-600 dark:text-gray-400"
         }`}>
           {unfulfilledOrders.length}
         </div>
         <div className="text-xs text-muted-foreground">Unfulfilled</div>
         {unfulfilledOrders.length > 0 && (
-          <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
             ${unfulfilledRevenue.toFixed(0)} pending
           </div>
         )}
       </div>
 
       {/* Total Orders */}
-      <div className="p-3 rounded-lg border bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
-        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{orders.length}</div>
+      <div className="p-3 rounded-lg border bg-gray-50 border-gray-200 dark:bg-gray-950 dark:border-gray-800">
+        <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{orders.length}</div>
         <div className="text-xs text-muted-foreground">Total Orders</div>
       </div>
 
       {/* Total Revenue */}
-      <div className="p-3 rounded-lg border bg-emerald-50 border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800">
-        <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+      <div className="p-3 rounded-lg border bg-gray-50 border-gray-200 dark:bg-gray-950 dark:border-gray-800">
+        <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
           ${totalRevenue.toFixed(0)}
         </div>
         <div className="text-xs text-muted-foreground">Revenue</div>
@@ -102,11 +102,11 @@ export function OrdersSection() {
       {/* Refunded / Issues */}
       <div className={`p-3 rounded-lg border ${
         refundedOrders.length > 0
-          ? "bg-red-100 border-red-300 dark:bg-red-950 dark:border-red-800"
+          ? "bg-gray-100 border-gray-300 dark:bg-gray-950 dark:border-gray-800"
           : "bg-gray-50 border-gray-200 dark:bg-gray-900 dark:border-gray-800"
       }`}>
         <div className={`text-2xl font-bold ${
-          refundedOrders.length > 0 ? "text-red-600 dark:text-red-400" : "text-gray-400"
+          refundedOrders.length > 0 ? "text-gray-600 dark:text-gray-400" : "text-gray-400"
         }`}>
           {refundedOrders.length}
         </div>
@@ -135,25 +135,25 @@ export function OrdersSection() {
       <span className="text-muted-foreground w-24 text-right flex-shrink-0 hidden sm:block">
         {order["Date"] || "-"}
       </span>
-      <span className="text-blue-600 w-10 text-center flex-shrink-0">
+      <span className="text-gray-600 w-10 text-center flex-shrink-0">
         {order["Items"] || 0}x
       </span>
-      <span className="font-semibold text-emerald-600 w-16 text-right flex-shrink-0">
+      <span className="font-semibold text-gray-600 w-16 text-right flex-shrink-0">
         ${Number(order["Total $"] || 0).toFixed(0)}
       </span>
       <span className={`text-xs px-2 py-1 rounded flex-shrink-0 ${
         order["Payment"] === "Paid"
-          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300"
+          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
           : order["Payment"] === "Refunded"
-          ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+          : "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
       }`}>
         {order["Payment"] || "Pending"}
       </span>
       <span className={`text-xs px-2 py-1 rounded flex-shrink-0 ${
         order["Fulfillment"] === "Fulfilled"
-          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-          : "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+          : "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
       }`}>
         {order["Fulfillment"] || "Unfulfilled"}
       </span>
@@ -194,8 +194,8 @@ export function OrdersSection() {
           <div className="border rounded-lg overflow-hidden">
             <div className={`px-4 py-3 flex items-center justify-between ${
               unfulfilledOrders.length > 0
-                ? "bg-orange-100 dark:bg-orange-950 border-b border-orange-200 dark:border-orange-800"
-                : "bg-emerald-100 dark:bg-emerald-950 border-b border-emerald-200 dark:border-emerald-800"
+                ? "bg-gray-100 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800"
+                : "bg-gray-100 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800"
             }`}>
               <div className="flex items-center gap-2">
                 <span className="text-lg">{unfulfilledOrders.length > 0 ? "⚠️" : "✅"}</span>
@@ -206,7 +206,7 @@ export function OrdersSection() {
                 </span>
               </div>
               {unfulfilledOrders.length > 0 && (
-                <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   ${unfulfilledRevenue.toFixed(0)} pending
                 </span>
               )}
@@ -279,7 +279,7 @@ export function OrdersSection() {
             </div>
             <div className="p-3 bg-muted/30 rounded-lg text-center">
               <p className="text-xs text-muted-foreground">Pending Payment</p>
-              <p className="text-lg font-bold text-yellow-600">
+              <p className="text-lg font-bold text-gray-600">
                 {pendingPaymentOrders.length}
               </p>
             </div>

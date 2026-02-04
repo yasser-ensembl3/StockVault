@@ -45,10 +45,10 @@ export function RecurringTasksSection() {
 
   // Frequency categories
   const frequencyOptions = [
-    { value: "Daily", label: "Daily", color: "bg-blue-100 text-blue-700 border-blue-300", emoji: "📅" },
-    { value: "Weekly", label: "Weekly", color: "bg-green-100 text-green-700 border-green-300", emoji: "📆" },
-    { value: "Monthly", label: "Monthly", color: "bg-purple-100 text-purple-700 border-purple-300", emoji: "🗓️" },
-    { value: "Quarterly", label: "Quarterly", color: "bg-orange-100 text-orange-700 border-orange-300", emoji: "📊" },
+    { value: "Daily", label: "Daily", color: "bg-gray-100 text-gray-700 border-gray-300", emoji: "📅" },
+    { value: "Weekly", label: "Weekly", color: "bg-gray-100 text-gray-700 border-gray-300", emoji: "📆" },
+    { value: "Monthly", label: "Monthly", color: "bg-gray-100 text-gray-700 border-gray-300", emoji: "🗓️" },
+    { value: "Quarterly", label: "Quarterly", color: "bg-gray-100 text-gray-700 border-gray-300", emoji: "📊" },
     { value: "Custom", label: "Custom", color: "bg-gray-100 text-gray-700 border-gray-300", emoji: "⚙️" },
   ]
 
@@ -156,20 +156,20 @@ export function RecurringTasksSection() {
         {activeTasks.length} active recurring task{activeTasks.length !== 1 ? 's' : ''}
       </div>
       {activeTasks.slice(0, 5).map((task) => (
-        <div key={task.id} className="p-2 rounded-lg bg-purple-50 border border-purple-200">
+        <div key={task.id} className="p-2 rounded-lg bg-gray-50 border border-gray-200">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <div className="font-medium text-xs text-purple-900 truncate">
+              <div className="font-medium text-xs text-gray-900 truncate">
                 {getFrequencyEmoji(task.frequency)} {task.title}
               </div>
               <div className="flex gap-2 mt-1 flex-wrap">
                 {task.frequency && (
-                  <span className="text-[10px] text-purple-600">
+                  <span className="text-[10px] text-gray-600">
                     🔄 {frequencyOptions.find(f => f.value === task.frequency)?.label || task.frequency}
                   </span>
                 )}
                 {task.assignee && (
-                  <span className="text-[10px] text-purple-600">👤 {task.assignee}</span>
+                  <span className="text-[10px] text-gray-600">👤 {task.assignee}</span>
                 )}
               </div>
             </div>
@@ -317,8 +317,8 @@ export function RecurringTasksSection() {
         </div>
 
         {error && (
-          <div className="p-4 border border-red-500 rounded-lg bg-red-500/10 mb-4">
-            <p className="text-sm text-red-500">{error}</p>
+          <div className="p-4 border border-gray-500 rounded-lg bg-gray-500/10 mb-4">
+            <p className="text-sm text-gray-500">{error}</p>
           </div>
         )}
 
@@ -407,7 +407,7 @@ export function RecurringTasksSection() {
                                 href={task.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[10px] text-blue-500 hover:underline block mt-1"
+                                className="text-[10px] text-gray-500 hover:underline block mt-1"
                               >
                                 View in Notion →
                               </a>

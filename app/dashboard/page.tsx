@@ -86,11 +86,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Quarterly Vault</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Stoic Vault</h1>
           <p className="text-muted-foreground">
             Financial insights for {selectedQuarter || "..."}
           </p>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -121,7 +121,7 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-500">{stats.withFinancial}</div>
+            <div className="text-3xl font-bold">{stats.withFinancial}</div>
           </CardContent>
         </Card>
         <Card>
@@ -131,7 +131,7 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-500">{stats.withStrategic}</div>
+            <div className="text-3xl font-bold">{stats.withStrategic}</div>
           </CardContent>
         </Card>
       </div>

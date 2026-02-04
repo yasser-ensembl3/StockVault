@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build the system prompt - more concise
-    const systemPrompt = `You are a financial assistant for Quarterly Vault. You analyze quarterly reports from companies.
+    const systemPrompt = `You are a financial assistant for Stoic Vault. You analyze quarterly reports from companies.
 
 AVAILABLE DATA:
 ${dataContext.join("\n")}

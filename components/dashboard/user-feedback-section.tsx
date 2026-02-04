@@ -191,17 +191,17 @@ export function UserFeedbackSection() {
 
   const keyMetrics = (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="text-center p-3 rounded-lg bg-blue-50 border border-blue-200">
-        <div className="text-2xl font-bold text-blue-700">{totalCount}</div>
-        <div className="text-sm text-blue-600">Total Feedbacks</div>
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">{totalCount}</div>
+        <div className="text-sm text-gray-600">Total Feedbacks</div>
       </div>
-      <div className="text-center p-3 rounded-lg bg-green-50 border border-green-200">
-        <div className="text-2xl font-bold text-green-700">{thisWeekCount}</div>
-        <div className="text-sm text-green-600">This Week</div>
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">{thisWeekCount}</div>
+        <div className="text-sm text-gray-600">This Week</div>
       </div>
-      <div className="text-center p-3 rounded-lg bg-purple-50 border border-purple-200">
-        <div className="text-2xl font-bold text-purple-700">{thisMonthCount}</div>
-        <div className="text-sm text-purple-600">This Month</div>
+      <div className="text-center p-3 rounded-lg bg-gray-50 border border-gray-200">
+        <div className="text-2xl font-bold text-gray-700">{thisMonthCount}</div>
+        <div className="text-sm text-gray-600">This Month</div>
       </div>
     </div>
   )

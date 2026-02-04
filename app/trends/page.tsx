@@ -39,10 +39,10 @@ interface Company {
 type FinancialData = any
 
 const COLORS = {
-  revenue: "#3b82f6",
-  netIncome: "#10b981",
-  operatingIncome: "#f59e0b",
-  eps: "#8b5cf6",
+  revenue: "#ffffff",
+  netIncome: "#9ca3af",
+  operatingIncome: "#6b7280",
+  eps: "#4b5563",
 }
 
 export default function TrendsPage() {
@@ -208,14 +208,14 @@ export default function TrendsPage() {
   const availableCompanies = companies.filter((c) => c.hasFinancial)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div>
         <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">
           &larr; Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold">Quarter Trends</h1>
-        <p className="text-muted-foreground">Compare a company&apos;s performance across quarters</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Quarter Trends</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">Compare a company&apos;s performance across quarters</p>
       </div>
 
       {/* Selectors */}
@@ -403,15 +403,7 @@ export default function TrendsPage() {
                           return (
                             <td
                               key={quarter}
-                              className={`text-right py-3 px-4 font-medium ${
-                                isGrowthMetric
-                                  ? isPositive
-                                    ? "text-green-500"
-                                    : isNegative
-                                    ? "text-red-500"
-                                    : ""
-                                  : ""
-                              }`}
+                              className="text-right py-3 px-4 font-medium"
                             >
                               {formatted}
                             </td>

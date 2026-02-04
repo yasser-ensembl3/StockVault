@@ -47,9 +47,9 @@ export function OneTimeTasksSection() {
   // Status columns for Kanban
   const statusColumns = [
     { value: "To Do", label: "To Do", color: "bg-slate-100 text-slate-700 border-slate-300" },
-    { value: "In Progress", label: "In Progress", color: "bg-blue-100 text-blue-700 border-blue-300" },
-    { value: "Review", label: "Review", color: "bg-purple-100 text-purple-700 border-purple-300" },
-    { value: "Done", label: "Done", color: "bg-green-100 text-green-700 border-green-300" },
+    { value: "In Progress", label: "In Progress", color: "bg-gray-100 text-gray-700 border-gray-300" },
+    { value: "Review", label: "Review", color: "bg-gray-100 text-gray-700 border-gray-300" },
+    { value: "Done", label: "Done", color: "bg-gray-100 text-gray-700 border-gray-300" },
   ]
 
   // Priority colors
@@ -57,13 +57,13 @@ export function OneTimeTasksSection() {
     if (!priority) return "bg-gray-100 text-gray-600"
     switch (priority.toLowerCase()) {
       case "urgent":
-        return "bg-red-100 text-red-700 border-red-300"
+        return "bg-gray-100 text-gray-700 border-gray-300"
       case "high":
-        return "bg-orange-100 text-orange-700 border-orange-300"
+        return "bg-gray-100 text-gray-700 border-gray-300"
       case "medium":
-        return "bg-yellow-100 text-yellow-700 border-yellow-300"
+        return "bg-gray-100 text-gray-700 border-gray-300"
       case "low":
-        return "bg-blue-100 text-blue-600 border-blue-300"
+        return "bg-gray-100 text-gray-600 border-gray-300"
       default:
         return "bg-gray-100 text-gray-600 border-gray-300"
     }
@@ -168,7 +168,7 @@ export function OneTimeTasksSection() {
 
   const getActiveTaskColor = (status: string) => {
     return status === "In Progress"
-      ? "bg-blue-50 border-blue-200 text-blue-900"
+      ? "bg-gray-50 border-gray-200 text-gray-900"
       : "bg-slate-50 border-slate-200 text-slate-900"
   }
 
@@ -350,8 +350,8 @@ export function OneTimeTasksSection() {
         </div>
 
         {error && (
-          <div className="p-4 border border-red-500 rounded-lg bg-red-500/10 mb-4">
-            <p className="text-sm text-red-500">{error}</p>
+          <div className="p-4 border border-gray-500 rounded-lg bg-gray-500/10 mb-4">
+            <p className="text-sm text-gray-500">{error}</p>
           </div>
         )}
 
@@ -446,7 +446,7 @@ export function OneTimeTasksSection() {
                               href={task.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[10px] text-blue-500 hover:underline block mt-1"
+                              className="text-[10px] text-gray-500 hover:underline block mt-1"
                             >
                               View in Notion →
                             </a>

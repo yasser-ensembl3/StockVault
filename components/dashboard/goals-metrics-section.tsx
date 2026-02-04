@@ -210,17 +210,17 @@ export function GoalsMetricsSection() {
             onClick={() => setSelectedMetricType(metric.type)}
             className={`text-center p-3 rounded-lg transition-all cursor-pointer hover:shadow-md ${
               isSelected
-                ? 'bg-green-600 border-green-700 ring-2 ring-green-400'
-                : 'bg-green-50 border-green-200 hover:bg-green-100'
+                ? 'bg-gray-600 border-gray-700 ring-2 ring-gray-400'
+                : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
             } border`}
           >
-            <div className={`text-2xl font-bold ${isSelected ? 'text-white' : 'text-green-700'}`}>
+            <div className={`text-2xl font-bold ${isSelected ? 'text-white' : 'text-gray-700'}`}>
               {metric.value}
             </div>
-            <div className={`text-xs mb-1 ${isSelected ? 'text-green-100' : 'text-green-600'}`}>
+            <div className={`text-xs mb-1 ${isSelected ? 'text-gray-100' : 'text-gray-600'}`}>
               {metric.type}
             </div>
-            <div className={`text-[10px] ${isSelected ? 'text-green-200' : 'text-muted-foreground'}`}>
+            <div className={`text-[10px] ${isSelected ? 'text-gray-200' : 'text-muted-foreground'}`}>
               {formatDate(metric.date)}
             </div>
           </button>
@@ -317,7 +317,7 @@ export function GoalsMetricsSection() {
                       <p className="text-xs text-muted-foreground">Click on a card above to switch goals</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-3xl font-bold text-green-700">{latestValue}</p>
+                      <p className="text-3xl font-bold text-gray-700">{latestValue}</p>
                       {metricsForType.length > 0 && (
                         <p className="text-xs text-muted-foreground">
                           as of {formatDate(metricsForType[0].date)}
@@ -351,9 +351,9 @@ export function GoalsMetricsSection() {
                         <Line
                           type="monotone"
                           dataKey="value"
-                          stroke="#16a34a"
+                          stroke="#9ca3af"
                           strokeWidth={2}
-                          dot={{ fill: '#16a34a', r: 4 }}
+                          dot={{ fill: '#9ca3af', r: 4 }}
                           activeDot={{ r: 6 }}
                         />
                       </LineChart>
@@ -375,7 +375,7 @@ export function GoalsMetricsSection() {
                             href={metric.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline"
+                            className="text-gray-500 hover:underline"
                           >
                             View →
                           </a>

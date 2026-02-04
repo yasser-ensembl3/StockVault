@@ -44,11 +44,11 @@ interface OrderRecord {
 type MetricKey = "Total Sales" | "Net Sales" | "Paid Orders" | "Average Order Value" | "Returning Customer Rate"
 
 const METRIC_CONFIGS: Record<MetricKey, { label: string; format: (v: number) => string; color: string }> = {
-  "Total Sales": { label: "Total Sales", format: (v) => `$${v.toLocaleString()}`, color: "#10b981" },
-  "Net Sales": { label: "Net Sales", format: (v) => `$${v.toLocaleString()}`, color: "#3b82f6" },
-  "Paid Orders": { label: "Orders", format: (v) => v.toLocaleString(), color: "#8b5cf6" },
-  "Average Order Value": { label: "AOV", format: (v) => `$${v.toFixed(2)}`, color: "#f59e0b" },
-  "Returning Customer Rate": { label: "Return Rate", format: (v) => `${v.toFixed(1)}%`, color: "#ec4899" },
+  "Total Sales": { label: "Total Sales", format: (v) => `$${v.toLocaleString()}`, color: "#9ca3af" },
+  "Net Sales": { label: "Net Sales", format: (v) => `$${v.toLocaleString()}`, color: "#d1d5db" },
+  "Paid Orders": { label: "Orders", format: (v) => v.toLocaleString(), color: "#6b7280" },
+  "Average Order Value": { label: "AOV", format: (v) => `$${v.toFixed(2)}`, color: "#4b5563" },
+  "Returning Customer Rate": { label: "Return Rate", format: (v) => `${v.toFixed(1)}%`, color: "#6b7280" },
 }
 
 export function SalesTrackingSection() {
@@ -152,17 +152,17 @@ export function SalesTrackingSection() {
             onClick={() => setSelectedMetric(metric)}
             className={`text-center p-3 rounded-lg transition-all cursor-pointer hover:shadow-md ${
               isSelected
-                ? "bg-emerald-600 border-emerald-700 ring-2 ring-emerald-400"
-                : "bg-emerald-50 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-950 dark:border-emerald-800 dark:hover:bg-emerald-900"
+                ? "bg-gray-600 border-gray-700 ring-2 ring-gray-400"
+                : "bg-gray-50 border-gray-200 hover:bg-gray-100 dark:bg-gray-950 dark:border-gray-800 dark:hover:bg-gray-900"
             } border`}
           >
-            <div className={`text-xl font-bold ${isSelected ? "text-white" : "text-emerald-700 dark:text-emerald-300"}`}>
+            <div className={`text-xl font-bold ${isSelected ? "text-white" : "text-gray-700 dark:text-gray-300"}`}>
               {config.format(value)}
             </div>
-            <div className={`text-xs ${isSelected ? "text-emerald-100" : "text-emerald-600 dark:text-emerald-400"}`}>
+            <div className={`text-xs ${isSelected ? "text-gray-100" : "text-gray-600 dark:text-gray-400"}`}>
               {config.label}
             </div>
-            <div className={`text-[10px] ${isSelected ? "text-emerald-200" : "text-muted-foreground"}`}>
+            <div className={`text-[10px] ${isSelected ? "text-gray-200" : "text-muted-foreground"}`}>
               {latestRecord.Period}
             </div>
           </button>
@@ -216,7 +216,7 @@ export function SalesTrackingSection() {
             </div>
             {latestRecord && (
               <div className="text-right">
-                <p className="text-3xl font-bold text-emerald-600">
+                <p className="text-3xl font-bold text-gray-600">
                   {METRIC_CONFIGS[selectedMetric].format(getMetricValue(latestRecord, selectedMetric))}
                 </p>
                 <p className="text-xs text-muted-foreground">Latest: {latestRecord.Period}</p>
@@ -260,11 +260,11 @@ export function SalesTrackingSection() {
               </div>
               <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-xs text-muted-foreground">Discounts</p>
-                <p className="font-semibold text-red-500">-${(latestRecord.Discounts ?? 0).toLocaleString()}</p>
+                <p className="font-semibold text-gray-500">-${(latestRecord.Discounts ?? 0).toLocaleString()}</p>
               </div>
               <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-xs text-muted-foreground">Returns</p>
-                <p className="font-semibold text-red-500">-${(latestRecord.Returns ?? 0).toLocaleString()}</p>
+                <p className="font-semibold text-gray-500">-${(latestRecord.Returns ?? 0).toLocaleString()}</p>
               </div>
               <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-xs text-muted-foreground">Shipping + Tax</p>
@@ -306,18 +306,18 @@ export function SalesTrackingSection() {
               <>
                 {/* Key metrics summary */}
                 <div className="grid grid-cols-4 gap-2 mb-3">
-                  <div className="p-2 bg-emerald-50 dark:bg-emerald-950 rounded-lg text-center">
-                    <p className="text-lg font-bold text-emerald-600">{orders.length}</p>
+                  <div className="p-2 bg-gray-50 dark:bg-gray-950 rounded-lg text-center">
+                    <p className="text-lg font-bold text-gray-600">{orders.length}</p>
                     <p className="text-[10px] text-muted-foreground">Orders</p>
                   </div>
-                  <div className="p-2 bg-blue-50 dark:bg-blue-950 rounded-lg text-center">
-                    <p className="text-lg font-bold text-blue-600">
+                  <div className="p-2 bg-gray-50 dark:bg-gray-950 rounded-lg text-center">
+                    <p className="text-lg font-bold text-gray-600">
                       {orders.reduce((sum, o) => sum + (Number(o["Items"]) || 0), 0)}
                     </p>
                     <p className="text-[10px] text-muted-foreground">Items</p>
                   </div>
-                  <div className="p-2 bg-purple-50 dark:bg-purple-950 rounded-lg text-center">
-                    <p className="text-lg font-bold text-purple-600">
+                  <div className="p-2 bg-gray-50 dark:bg-gray-950 rounded-lg text-center">
+                    <p className="text-lg font-bold text-gray-600">
                       ${orders.reduce((sum, o) => sum + (Number(o["Total $"]) || 0), 0).toFixed(0)}
                     </p>
                     <p className="text-[10px] text-muted-foreground">Revenue</p>
@@ -349,25 +349,25 @@ export function SalesTrackingSection() {
                       <span className="text-muted-foreground w-20 text-right flex-shrink-0">
                         {order["Date"] || "-"}
                       </span>
-                      <span className="text-blue-600 w-8 text-center flex-shrink-0">
+                      <span className="text-gray-600 w-8 text-center flex-shrink-0">
                         {order["Items"] || 0}x
                       </span>
-                      <span className="font-semibold text-emerald-600 w-12 text-right flex-shrink-0">
+                      <span className="font-semibold text-gray-600 w-12 text-right flex-shrink-0">
                         ${Number(order["Total $"] || 0).toFixed(0)}
                       </span>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${
                         order["Payment"] === "Paid"
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300"
+                          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
                           : order["Payment"] === "Refunded"
-                          ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+                          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                          : "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
                       }`}>
                         {order["Payment"] || "Pending"}
                       </span>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${
                         order["Fulfillment"] === "Fulfilled"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                          : "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+                          ? "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                          : "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
                       }`}>
                         {order["Fulfillment"] || "Unfulfilled"}
                       </span>
