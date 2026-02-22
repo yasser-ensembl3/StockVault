@@ -1,184 +1,194 @@
-# StockVault
+# Stoic Vault
 
-A financial insights dashboard for analyzing quarterly reports from public companies. Built with Next.js 14, Tailwind CSS, and powered by Google Drive for data storage and OpenAI for intelligent chat assistance.
+Financial insights dashboard for analyzing quarterly reports from public companies. Built with Next.js 14, powered by Google Drive for data storage, OpenAI for intelligent chat assistance, and Alpha Vantage for stock data.
 
 ## Features
 
-### Dashboard
+### Dashboard (`/dashboard`)
 - Overview of all tracked companies with key financial metrics
 - Search and filter companies by name
-- Quick access to individual company details
 - Quarter selector to view different reporting periods
+- Statistics cards: total companies, financial data available, strategic data available
 
-### Company Analysis
-Detailed company pages with 7 comprehensive tabs:
-- **Overview** - Executive summary, key takeaways, and management tone
-- **Financial** - Income statement, balance sheet, cash flow metrics
-- **Strategic** - Strategic initiatives, guidance, and outlook
-- **Products** - Product segments and business lines breakdown
-- **Competitive** - Market position and competitive advantages
-- **Risks** - Risk factors and challenges
-- **Investor** - Bull/bear cases and notable management quotes
-
-### Compare Tool
-- Side-by-side comparison of up to 4 companies
-- Visual charts: Revenue, Net Income, Growth Rates
+### Company Comparison (`/compare`)
+- Compare 2-4 companies side-by-side
+- Bar charts: revenue, net income, growth rates
 - Radar chart for multi-dimensional analysis
-- Detailed financial metrics table
+- 14 financial metrics comparison table
 
-### Trends
-- Track a single company's performance across multiple quarters
-- Line charts for Revenue, Net Income, Operating Income
-- Bar charts for EPS and YoY growth rates
+### Quarterly Trends (`/trends`)
+- Track a single company across multiple quarters
+- Line charts: revenue & net income trends
+- Bar charts: EPS trend, YoY growth rates
 - Quarter-over-quarter comparison table
 
-### AI Chat Assistant
-- Ask questions about financial data in natural language
-- Powered by OpenAI GPT-4o-mini
-- Markdown-formatted responses with tables and lists
-- Context-aware responses using actual company data
+### Company Detail (`/company/[name]`)
+7-tab deep dive:
+- **Overview** — executive summary, key metrics, key takeaways
+- **Financial** — income statement, balance sheet, cash flow, revenue breakdown by segment/geography
+- **Strategic** — initiatives, management commentary, partnerships, M&A
+- **Products** — R&D focus, new launches, pipeline
+- **Competitive** — market position, advantages, threats, industry trends
+- **Risks** — risk factors with severity badges and mitigation strategies
+- **Investor** — bull/bear cases, catalysts, key questions, ESG data
+
+### AI Chat (`/chat`)
+- Natural language financial queries powered by GPT-4o-mini
+- Automatic context extraction (companies and quarters mentioned)
+- Fetches relevant financial + strategic data to build context
+- Markdown responses with source badges
+- Suggested questions for quick start
+
+### Stock Data (`/stock`)
+- Search stock symbols via Alpha Vantage
+- Fetch historical data (overview, income statement, balance sheet, cash flow)
+- Upload pipeline to Google Drive for persistent storage
+
+### Investment Reports (`/investment/[name]`)
+- Detailed investment analysis pages
+- Parsed from Google Drive markdown documents
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **Styling**: Tailwind CSS v4
-- **UI Components**: shadcn/ui + Radix UI
-- **Charts**: Recharts
-- **Data Source**: Google Drive API
-- **AI**: OpenAI API
-- **Documentation**: Nextra
+| Component | Technology |
+|-----------|------------|
+| Framework | Next.js 14, React 18 |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4, Radix UI, shadcn/ui |
+| Charts | Recharts |
+| Auth | NextAuth.js (Google + GitHub OAuth) |
+| AI | OpenAI API (gpt-4o-mini) |
+| Data storage | Google Drive API v3 |
+| Stock data | Alpha Vantage API |
+| Docs | Nextra |
+| Caching | In-memory (60-second TTL) |
 
-## Project Structure
+## Architecture
 
 ```
+quarterly-vault/
 ├── app/
-│   ├── api/
-│   │   ├── chat/          # OpenAI chat endpoint
-│   │   └── drive/         # Google Drive API routes
-│   ├── chat/              # AI assistant page
-│   ├── company/[name]/    # Company detail page
-│   ├── compare/           # Company comparison page
-│   ├── dashboard/         # Main dashboard
-│   ├── docs/              # Documentation (Nextra)
-│   └── trends/            # Quarter trends page
+│   ├── layout.tsx                      # Root layout
+│   ├── page.tsx                        # Home (redirects to /compare)
+│   ├── pages/
+│   │   ├── dashboard/page.tsx          # Main dashboard
+│   │   ├── compare/page.tsx            # Company comparison (2-4)
+│   │   ├── trends/page.tsx             # Single company trends
+│   │   ├── chat/page.tsx               # AI financial assistant
+│   │   ├── company/[name]/page.tsx     # Company detail (7 tabs)
+│   │   ├── investment/[name]/page.tsx  # Investment report detail
+│   │   ├── stock/page.tsx              # Stock search & fetch
+│   │   └── stock/[symbol]/page.tsx     # Stock detail
+│   └── api/
+│       ├── chat/route.ts               # OpenAI chat endpoint
+│       ├── drive/
+│       │   ├── quarters/route.ts       # List available quarters
+│       │   ├── companies/route.ts      # List companies for quarter
+│       │   ├── insights/route.ts       # Fetch financial/strategic JSON
+│       │   └── files/route.ts          # Drive file operations
+│       ├── investment/
+│       │   ├── companies/route.ts      # List investment companies
+│       │   └── report/route.ts         # Get investment report
+│       └── stock/
+│           ├── pipeline/route.ts       # Fetch + upload stock data
+│           ├── symbols/route.ts        # List cached symbols
+│           ├── search/route.ts         # Search symbols (Alpha Vantage)
+│           └── [symbol]/route.ts       # Get stock data
 ├── components/
-│   ├── sidebar.tsx        # Navigation sidebar
-│   └── ui/                # shadcn/ui components
+│   ├── sidebar.tsx                     # Collapsible sidebar navigation
+│   ├── company-card.tsx                # Company display card
+│   ├── quarter-selector.tsx            # Quarter dropdown
+│   ├── layout-wrapper.tsx              # Responsive layout with sidebar
+│   ├── dashboard/                      # Dashboard-specific components
+│   ├── stock/                          # Stock components (period toggle, financial table)
+│   └── ui/                            # shadcn/ui (card, button, badge, tabs, select, etc.)
 ├── lib/
-│   ├── google-drive.ts    # Google Drive client
-│   └── utils.ts           # Utility functions
-└── content/
-    └── docs/              # MDX documentation
+│   ├── google-drive.ts                # Google Drive API client (list, fetch, upload)
+│   ├── cache.ts                       # In-memory cache (60s TTL)
+│   ├── auth.ts                        # NextAuth config (Google + GitHub OAuth)
+│   ├── alpha-vantage.ts               # Alpha Vantage API client
+│   ├── alpha-vantage-types.ts         # Type definitions
+│   ├── investment-reports.ts          # Investment report parsing
+│   ├── project-config.ts             # Config loader from env
+│   └── utils.ts                       # Helpers (cn for classnames)
+├── content/docs/                      # Nextra MDX documentation
+└── types/next-auth.d.ts               # NextAuth type augmentation
 ```
 
-## Data Structure
-
-The app expects data organized in Google Drive as follows:
+## Data Flow
 
 ```
-Root Folder/
-├── Q3 2024/
-│   ├── Amazon/
-│   │   └── Insights/
-│   │       ├── financial.json
-│   │       └── strategic.json
-│   ├── Coinbase/
-│   │   └── Insights/
-│   │       ├── financial.json
-│   │       └── strategic.json
-│   └── ...
-├── Q2 2024/
-│   └── ...
-└── ...
+Google Drive (folder structure)
+├── Root Folder/
+│   ├── Q3 2024/
+│   │   ├── Amazon/Insights/
+│   │   │   ├── Amazon_financial.json
+│   │   │   └── Amazon_strategic.json
+│   │   ├── Coinbase/Insights/...
+│   │   └── ...
+│   ├── Q2 2024/...
+│   └── Stock Data/
+│       ├── AAPL/ (overview, income, balance, cashflow .json)
+│       └── ...
+         ↓
+    Google Drive API Client (lib/google-drive.ts)
+         ↓
+    In-Memory Cache (60s TTL)
+         ↓
+    Next.js API Routes
+         ↓
+    React Components
 ```
 
-## Environment Variables
+## API Routes
 
-Create a `.env.local` file with the following variables:
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/drive/quarters` | GET | List all available quarters |
+| `/api/drive/companies` | GET | List companies in a quarter |
+| `/api/drive/insights` | GET | Fetch financial or strategic JSON |
+| `/api/drive/files` | GET | List files in a Drive folder (auth required) |
+| `/api/chat` | POST | AI chat with financial context |
+| `/api/investment/companies` | GET | List investment companies |
+| `/api/investment/report` | GET | Get parsed investment report |
+| `/api/stock/search` | GET | Search stock symbols |
+| `/api/stock/pipeline` | POST | Fetch stock data + upload to Drive |
+| `/api/stock/symbols` | GET | List cached stock symbols |
 
-```env
-# Google Drive OAuth2
-GOOGLE_CLIENT_ID=your_client_id
-GOOGLE_CLIENT_SECRET=your_client_secret
-GOOGLE_REFRESH_TOKEN=your_refresh_token
-
-# Google Drive Root Folder ID
-GDRIVE_ROOT_FOLDER_ID=your_folder_id
-
-# OpenAI API Key (for chat assistant)
-OPENAI_API_KEY=your_openai_key
-```
-
-### Setting up Google Drive API
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable the Google Drive API
-4. Create OAuth 2.0 credentials (Desktop app)
-5. Use the OAuth Playground or a script to get a refresh token with `drive.readonly` scope
-
-## Getting Started
+## Setup
 
 ### Prerequisites
 
 - Node.js 18+
-- npm or yarn
 - Google Cloud project with Drive API enabled
 - OpenAI API key
+- Alpha Vantage API key (free tier available)
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone git@github.com:yasser-ensembl3/StockVault.git
-cd StockVault
-
-# Install dependencies
+cd quarterly-vault
 npm install
-
-# Set up environment variables
 cp .env.example .env.local
 # Edit .env.local with your credentials
-
-# Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
+### Environment Variables
 
-### Build for Production
+| Variable | Description |
+|----------|-------------|
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `GOOGLE_REFRESH_TOKEN` | Google OAuth refresh token |
+| `GDRIVE_ROOT_FOLDER_ID` | Root folder ID for quarterly data |
+| `GDRIVE_STOCK_FOLDER_ID` | Folder ID for stock data (optional) |
+| `OPENAI_API_KEY` | OpenAI API key (gpt-4o-mini) |
+| `ALPHA_VANTAGE_KEY` | Alpha Vantage API key |
+| `NEXTAUTH_SECRET` | NextAuth session secret |
+| `NEXTAUTH_URL` | App URL (default: http://localhost:3000) |
+| `NEXT_PUBLIC_PROJECT_NAME` | Display name (default: Stoic Vault) |
 
-```bash
-npm run build
-npm start
-```
+## Fallback
 
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the repository in [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard
-4. Deploy
-
-### Environment Variables on Vercel
-
-Make sure to add all environment variables from `.env.local` to your Vercel project settings.
-
-## API Routes
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/drive/quarters` | GET | List available quarters |
-| `/api/drive/companies` | GET | List companies for a quarter |
-| `/api/drive/insights` | GET | Get financial/strategic data |
-| `/api/chat` | POST | Chat with AI assistant |
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
+When Google Drive is unavailable, the app falls back to mock data with sample companies (Amazon, Coinbase, Shopify, NVIDIA, eBay, Etsy, LVMH, Circle) so the UI remains functional.
