@@ -1,4 +1,7 @@
 import { google, drive_v3 } from 'googleapis'
+import { Readable } from 'stream'
+import type { AVFunction } from './alpha-vantage-types'
+import type { AVFetchAllResult } from './alpha-vantage'
 
 export interface DriveFile {
   id: string
@@ -219,4 +222,183 @@ export function isGoogleDriveConfigured(): boolean {
     process.env.GOOGLE_REFRESH_TOKEN &&
     process.env.GDRIVE_ROOT_FOLDER_ID
   )
+}
+
+// ============================================================
+// Stock Data — Google Drive read/write
+// ============================================================
+
+const AV_FN_TO_FILENAME: Record<AVFunction, string> = {
+  OVERVIEW: 'overview.json',
+  INCOME_STATEMENT: 'income_statement.json',
+  BALANCE_SHEET: 'balance_sheet.json',
+  CASH_FLOW: 'cash_flow.json',
+  EARNINGS: 'earnings.json',
+}
+
+/**
+ * Create a sub-folder inside `parentId` or return the existing one.
+ */
+export async function createOrGetFolder(
+  parentId: string,
+  name: string
+): Promise<string> {
+  const drive = getDriveClient()
+
+  // Check if folder already exists
+  const existing = await drive.files.list({
+    q: `'${parentId}' in parents and name = '${name}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    fields: 'files(id)',
+  })
+
+  if (existing.data.files && existing.data.files.length > 0 && existing.data.files[0].id) {
+    return existing.data.files[0].id
+  }
+
+  // Create it
+  const created = await drive.files.create({
+    requestBody: {
+      name,
+      mimeType: 'application/vnd.google-apps.folder',
+      parents: [parentId],
+    },
+    fields: 'id',
+  })
+
+  if (!created.data.id) throw new Error(`Failed to create folder "${name}"`)
+  return created.data.id
+}
+
+/**
+ * Upload (or update) a JSON file in a Drive folder.
+ */
+export async function uploadJsonFile(
+  folderId: string,
+  fileName: string,
+  data: unknown
+): Promise<string> {
+  const drive = getDriveClient()
+  const content = JSON.stringify(data, null, 2)
+
+  // Check if file already exists
+  const existing = await drive.files.list({
+    q: `'${folderId}' in parents and name = '${fileName}' and trashed = false`,
+    fields: 'files(id)',
+  })
+
+  if (existing.data.files && existing.data.files.length > 0 && existing.data.files[0].id) {
+    // Update existing file
+    const fileId = existing.data.files[0].id
+    await drive.files.update({
+      fileId,
+      media: {
+        mimeType: 'application/json',
+        body: Readable.from(content),
+      },
+    })
+    return fileId
+  }
+
+  // Create new file
+  const created = await drive.files.create({
+    requestBody: {
+      name: fileName,
+      parents: [folderId],
+    },
+    media: {
+      mimeType: 'application/json',
+      body: Readable.from(content),
+    },
+    fields: 'id',
+  })
+
+  if (!created.data.id) throw new Error(`Failed to upload "${fileName}"`)
+  return created.data.id
+}
+
+/**
+ * Upload all fetched stock data to Drive.
+ * Structure: Stock Data / SYMBOL / {overview, income_statement, ...}.json + _meta.json
+ */
+export async function uploadStockDataToDrive(
+  symbol: string,
+  fetchResult: AVFetchAllResult
+): Promise<{ folderId: string; uploaded: string[] }> {
+  const stockFolderId = process.env.GDRIVE_STOCK_FOLDER_ID
+  if (!stockFolderId) throw new Error('GDRIVE_STOCK_FOLDER_ID not configured')
+
+  const symbolFolder = await createOrGetFolder(stockFolderId, symbol.toUpperCase())
+  const uploaded: string[] = []
+
+  for (const result of fetchResult.results) {
+    if (result.data) {
+      const fileName = AV_FN_TO_FILENAME[result.fn]
+      await uploadJsonFile(symbolFolder, fileName, result.data)
+      uploaded.push(fileName)
+    }
+  }
+
+  // Upload metadata
+  const meta = {
+    symbol: symbol.toUpperCase(),
+    fetchedAt: fetchResult.fetchedAt,
+    errors: fetchResult.errors,
+    files: uploaded,
+  }
+  await uploadJsonFile(symbolFolder, '_meta.json', meta)
+  uploaded.push('_meta.json')
+
+  return { folderId: symbolFolder, uploaded }
+}
+
+/**
+ * Read a single stock data JSON from Drive for a given symbol and AV function.
+ */
+export async function readStockDataFromDrive(
+  symbol: string,
+  fn: AVFunction
+): Promise<unknown | null> {
+  const stockFolderId = process.env.GDRIVE_STOCK_FOLDER_ID
+  if (!stockFolderId) return null
+
+  const drive = getDriveClient()
+
+  // Find symbol folder
+  const symbolFolders = await drive.files.list({
+    q: `'${stockFolderId}' in parents and name = '${symbol.toUpperCase()}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    fields: 'files(id)',
+  })
+
+  if (!symbolFolders.data.files || symbolFolders.data.files.length === 0) {
+    return null
+  }
+
+  const symbolFolderId = symbolFolders.data.files[0].id!
+  const fileName = AV_FN_TO_FILENAME[fn]
+
+  // Find the JSON file
+  const files = await drive.files.list({
+    q: `'${symbolFolderId}' in parents and name = '${fileName}' and trashed = false`,
+    fields: 'files(id)',
+  })
+
+  if (!files.data.files || files.data.files.length === 0) {
+    return null
+  }
+
+  return fetchFileContent(files.data.files[0].id!)
+}
+
+/**
+ * List all stock symbol folders inside the Stock Data folder.
+ */
+export async function listStockSymbols(): Promise<string[]> {
+  const stockFolderId = process.env.GDRIVE_STOCK_FOLDER_ID
+  if (!stockFolderId) return []
+
+  const contents = await listFolderContents(stockFolderId)
+  return contents
+    .filter(f => f.mimeType === 'application/vnd.google-apps.folder')
+    .map(f => f.name)
+    .sort()
 }

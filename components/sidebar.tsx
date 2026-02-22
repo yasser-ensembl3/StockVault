@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import { ChevronDown, ChevronRight, Building2, GitCompare, TrendingUp, Briefcase, X } from "lucide-react"
+import { ChevronDown, ChevronRight, Building2, GitCompare, TrendingUp, Briefcase, BarChart3, Plus, X } from "lucide-react"
 
 type Company = {
   name: string
@@ -26,10 +26,13 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [companies, setCompanies] = useState<Company[]>([])
   const [investmentCompanies, setInvestmentCompanies] = useState<InvestmentCompany[]>([])
+  const [stockSymbols, setStockSymbols] = useState<string[]>([])
   const [isStockOpen, setIsStockOpen] = useState(true)
   const [isInvestmentOpen, setIsInvestmentOpen] = useState(true)
+  const [isStockDataOpen, setIsStockDataOpen] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [isInvestmentLoading, setIsInvestmentLoading] = useState(true)
+  const [isStockDataLoading, setIsStockDataLoading] = useState(true)
 
   useEffect(() => {
     async function fetchCompanies() {
@@ -61,6 +64,21 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     fetchInvestmentCompanies()
   }, [])
 
+  useEffect(() => {
+    async function fetchStockSymbols() {
+      try {
+        const res = await fetch("/api/stock/symbols")
+        const data = await res.json()
+        setStockSymbols(data.symbols || [])
+      } catch (error) {
+        console.error("Failed to fetch stock symbols:", error)
+      } finally {
+        setIsStockDataLoading(false)
+      }
+    }
+    fetchStockSymbols()
+  }, [])
+
   // Auto-expand if on a company page
   useEffect(() => {
     if (pathname?.startsWith("/company/")) {
@@ -68,6 +86,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     }
     if (pathname?.startsWith("/investment/")) {
       setIsInvestmentOpen(true)
+    }
+    if (pathname?.startsWith("/stock")) {
+      setIsStockDataOpen(true)
     }
   }, [pathname])
 
@@ -226,6 +247,75 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                       </Link>
                     )
                   })
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Stock Data - Collapsible */}
+          <div>
+            <button
+              onClick={() => setIsStockDataOpen(!isStockDataOpen)}
+              className={cn(
+                "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors",
+                pathname?.startsWith("/stock")
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <BarChart3 className="h-4 w-4" />
+                <span>Stock Data</span>
+              </div>
+              {isStockDataOpen ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+
+            {isStockDataOpen && (
+              <div className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
+                {isStockDataLoading ? (
+                  <div className="px-3 py-2 text-xs text-muted-foreground">
+                    Loading...
+                  </div>
+                ) : (
+                  <>
+                    {stockSymbols.map((s) => {
+                      const href = `/stock/${s}`
+                      const isActive = pathname === href
+
+                      return (
+                        <Link
+                          key={s}
+                          href={href}
+                          onClick={handleLinkClick}
+                          className={cn(
+                            "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                            isActive
+                              ? "bg-primary/10 text-primary font-medium"
+                              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          )}
+                        >
+                          {s}
+                        </Link>
+                      )
+                    })}
+                    <Link
+                      href="/stock"
+                      onClick={handleLinkClick}
+                      className={cn(
+                        "flex items-center gap-1 px-3 py-1.5 rounded-md text-sm transition-colors",
+                        pathname === "/stock"
+                          ? "bg-primary/10 text-primary font-medium"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      <Plus className="h-3 w-3" />
+                      Add Symbol
+                    </Link>
+                  </>
                 )}
               </div>
             )}
